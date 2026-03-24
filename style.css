@@ -1,0 +1,518 @@
+/* ═══════════════════════════════════════════
+   CONSTRUYE EL COMPÁS — estilos base
+   Estética: manuscrito nocturno / tiza sobre pizarrón
+   ═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Variables ─────────────────────────────── */
+:root {
+  --bg:          #0e0f12;
+  --surface:     #161820;
+  --surface-2:   #1e2029;
+  --border:      #2e3040;
+  --staff-line:  #c8b97a55;
+  --gold:        #c8b97a;
+  --gold-light:  #e8d89a;
+  --gold-dim:    #8a7d50;
+  --cream:       #f0e9d6;
+  --accent:      #e06c4a;
+  --accent-ok:   #5bbf8e;
+  --accent-err:  #e04a4a;
+  --text:        #d4cbb8;
+  --text-dim:    #7a7568;
+
+  --note-w:      52px;
+  --note-h:      52px;
+  --staff-h:     110px;
+  --radius:      10px;
+  --radius-lg:   18px;
+
+  --font-serif:  'Playfair Display', Georgia, serif;
+  --font-mono:   'DM Mono', monospace;
+}
+
+/* ── Reset ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-serif);
+  overflow: hidden;
+}
+
+/* ── Pantallas ──────────────────────────────── */
+.screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity .4s ease;
+}
+.screen.active {
+  opacity: 1; pointer-events: all;
+}
+
+/* ── Pantalla intro ─────────────────────────── */
+#screen-intro {
+  background: radial-gradient(ellipse at 30% 60%, #1a1c28 0%, var(--bg) 70%);
+  overflow: hidden;
+}
+
+.intro-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 18px;
+}
+
+.label-small {
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+}
+
+.title-main {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 10vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--gold-light);
+  text-shadow: 0 0 60px #c8b97a33;
+}
+
+.subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+/* Pentagrama decorativo de fondo */
+.staff-deco {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: center; gap: 22px;
+  padding: 0 0 80px;
+  opacity: .06; pointer-events: none;
+}
+.staff-deco .line {
+  width: 100%; height: 1px;
+  background: var(--gold);
+}
+
+/* ── Botones ─────────────────────────────────── */
+.btn-primary {
+  padding: 12px 32px;
+  background: var(--gold);
+  color: #0e0f12;
+  border: none; border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  font-weight: 500;
+  letter-spacing: .08em;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s, background .15s;
+  box-shadow: 0 4px 20px #c8b97a40;
+}
+.btn-primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px #c8b97a55;
+}
+.btn-primary:active { transform: translateY(0); }
+.btn-primary:disabled {
+  opacity: .35; cursor: not-allowed;
+  transform: none; box-shadow: none;
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  letter-spacing: .06em;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--gold-dim); color: var(--gold); }
+
+/* ── Pantalla de juego ──────────────────────── */
+#screen-game {
+  justify-content: flex-start;
+  padding: 0;
+  background: var(--bg);
+}
+
+.game-header {
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 24px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.game-title {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold-dim);
+  letter-spacing: .04em;
+}
+
+.hud-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+  min-width: 56px;
+}
+.hud-label {
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--text-dim);
+}
+.hud-value {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--gold);
+  transition: transform .2s;
+}
+.hud-value.bump { animation: bump .25s ease; }
+@keyframes bump {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ── Main área de juego ─────────────────────── */
+.game-main {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 20px 12px;
+}
+
+.level-instruction {
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── Pentagrama ─────────────────────────────── */
+.staff-wrapper {
+  width: 100%; max-width: 560px;
+  display: flex; flex-direction: column;
+  align-items: flex-start; gap: 12px;
+}
+
+.staff {
+  position: relative;
+  width: 100%;
+  height: var(--staff-h);
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.staff-lines {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: space-evenly;
+  padding: 12px 0;
+  pointer-events: none;
+}
+.s-line {
+  width: 100%; height: 1px;
+  background: var(--staff-line);
+}
+
+/* Nota colocada en el pentagrama */
+.placed-notes {
+  position: absolute; inset: 0;
+  display: flex; align-items: center;
+  gap: 6px;
+  padding: 0 56px 0 12px; /* espacio para la clave/compás */
+  pointer-events: none;
+}
+
+.note-on-staff {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+  flex-shrink: 0;
+  animation: noteIn .2s cubic-bezier(.34,1.56,.64,1);
+  cursor: pointer;
+  pointer-events: all;
+}
+@keyframes noteIn {
+  from { transform: scale(0) translateY(-10px); opacity: 0; }
+  to   { transform: scale(1) translateY(0);     opacity: 1; }
+}
+
+.note-on-staff .note-glyph {
+  font-size: 2.2rem;
+  line-height: 1;
+  color: var(--gold);
+  text-shadow: 0 0 12px #c8b97a60;
+  transition: transform .1s;
+}
+.note-on-staff:hover .note-glyph { transform: scale(1.1); }
+
+.note-on-staff .note-name-small {
+  font-family: var(--font-mono);
+  font-size: .52rem;
+  color: var(--gold-dim);
+  letter-spacing: .04em;
+}
+
+/* Nota fantasma (preview hover) */
+.ghost-note {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  font-size: 2.2rem;
+  color: #c8b97a33;
+  pointer-events: none;
+  opacity: 0;
+  transition: left .08s;
+}
+.ghost-note.visible { opacity: 1; }
+
+/* Indicador de compás (4/4, 3/4…) */
+.time-signature {
+  position: absolute; left: 8px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--gold);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Barra de tiempos ───────────────────────── */
+.beats-bar-wrapper {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+}
+
+.beats-bar {
+  flex: 1; height: 6px;
+  background: var(--surface-2);
+  border-radius: 999px;
+  overflow: visible;
+  position: relative;
+}
+
+.beats-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  border-radius: 999px;
+  width: 0%;
+  transition: width .3s cubic-bezier(.4,0,.2,1);
+}
+
+.beats-overflow {
+  position: absolute; top: 0; right: 0;
+  height: 100%;
+  background: var(--accent-err);
+  border-radius: 999px;
+  width: 0%;
+  transition: width .3s ease;
+}
+
+.beats-label {
+  font-family: var(--font-mono);
+  font-size: .65rem;
+  letter-spacing: .06em;
+  color: var(--text-dim);
+  white-space: nowrap;
+  min-width: 90px;
+  text-align: right;
+}
+
+/* ── Paleta de figuras ──────────────────────── */
+.palette-section {
+  width: 100%; max-width: 560px;
+}
+
+.palette-label {
+  font-family: var(--font-mono);
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.palette {
+  display: flex; justify-content: center;
+  flex-wrap: wrap; gap: 10px;
+}
+
+.note-card {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  padding: 14px 16px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform .18s, border-color .18s, box-shadow .18s, background .18s;
+  min-width: 72px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.note-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold-dim);
+  box-shadow: 0 8px 24px #c8b97a20;
+  background: var(--surface-2);
+}
+
+.note-card:active {
+  transform: translateY(-1px);
+}
+
+.note-card.selected {
+  border-color: var(--gold);
+  background: #c8b97a12;
+  box-shadow: 0 0 0 2px #c8b97a30;
+}
+
+.note-card .card-glyph {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--cream);
+}
+
+.note-card .card-name {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: .7rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.note-card .card-beats {
+  font-family: var(--font-mono);
+  font-size: .6rem;
+  color: var(--gold-dim);
+  letter-spacing: .04em;
+}
+
+/* Badge de cantidad seleccionada */
+.note-card .card-count {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--gold);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: .6rem; font-weight: 500;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transform: scale(0);
+  transition: opacity .2s, transform .2s;
+}
+.note-card .card-count.visible { opacity: 1; transform: scale(1); }
+
+/* ── Controles ──────────────────────────────── */
+.controls {
+  width: 100%; max-width: 560px;
+  display: flex; justify-content: center; gap: 10px;
+  padding: 0 20px 24px;
+  margin: 0 auto;
+}
+
+/* ── Feedback overlay ───────────────────────── */
+.feedback {
+  position: absolute; inset: 0;
+  background: #0e0f12cc;
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(6px);
+  z-index: 20;
+  opacity: 1;
+  transition: opacity .3s;
+}
+
+.feedback.hidden { display: none; }
+
+.feedback-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 48px;
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 16px;
+  box-shadow: 0 24px 64px #00000080;
+  animation: cardIn .35s cubic-bezier(.34,1.56,.64,1);
+}
+
+@keyframes cardIn {
+  from { transform: scale(.85); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.feedback-icon { font-size: 3rem; line-height: 1; }
+
+.feedback-msg {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text);
+  max-width: 220px;
+}
+
+/* ── Pantalla final ─────────────────────────── */
+#screen-end {
+  background: radial-gradient(ellipse at 70% 40%, #1a1c28 0%, var(--bg) 70%);
+}
+
+.end-content {
+  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 20px;
+}
+
+/* ── Animación de shake (error) ─────────────── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+.shake { animation: shake .4s ease; }
+
+/* ── Responsivo ─────────────────────────────── */
+@media (max-width: 400px) {
+  .note-card { min-width: 60px; padding: 10px 12px 8px; }
+  .note-card .card-glyph { font-size: 1.6rem; }
+  .feedback-card { padding: 28px 24px; }
+  .title-main { font-size: 2.5rem; }
+}

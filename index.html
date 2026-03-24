@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Construye el Compás</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ░░ PANTALLA DE INICIO ░░ -->
+  <div id="screen-intro" class="screen active">
+    <div class="intro-content">
+      <p class="label-small">minijuego de música</p>
+      <h1 class="title-main">Construye<br>el Compás</h1>
+      <p class="subtitle">Llena cada compás con las figuras correctas<br>sin pasarte ni quedarte corto.</p>
+      <button id="btn-start" class="btn-primary">Comenzar</button>
+    </div>
+    <div class="staff-deco" aria-hidden="true">
+      <div class="line"></div><div class="line"></div>
+      <div class="line"></div><div class="line"></div>
+      <div class="line"></div>
+    </div>
+  </div>
+
+  <!-- ░░ PANTALLA DE JUEGO ░░ -->
+  <div id="screen-game" class="screen">
+
+    <header class="game-header">
+      <div class="hud-item">
+        <span class="hud-label">Nivel</span>
+        <span id="hud-level" class="hud-value">1</span>
+      </div>
+      <h2 class="game-title">Construye el Compás</h2>
+      <div class="hud-item">
+        <span class="hud-label">Puntos</span>
+        <span id="hud-score" class="hud-value">0</span>
+      </div>
+    </header>
+
+    <main class="game-main">
+
+      <!-- Instrucción del nivel -->
+      <div id="level-instruction" class="level-instruction">
+        <span id="instruction-text">Llena un compás de 4/4</span>
+      </div>
+
+      <!-- Área del pentagrama -->
+      <div class="staff-wrapper">
+
+        <!-- Indicador de compás (tiempo) -->
+        <div class="time-signature" id="time-signature">
+          <span id="ts-top">4</span>
+          <span id="ts-bottom">4</span>
+        </div>
+
+        <!-- Pentagrama con notas colocadas -->
+        <div class="staff" id="staff">
+          <div class="staff-lines" aria-hidden="true">
+            <div class="s-line"></div><div class="s-line"></div>
+            <div class="s-line"></div><div class="s-line"></div>
+            <div class="s-line"></div>
+          </div>
+          <!-- Las notas colocadas se insertan aquí -->
+          <div class="placed-notes" id="placed-notes"></div>
+          <!-- Cursor fantasma para preview -->
+          <div class="ghost-note" id="ghost-note" aria-hidden="true"></div>
+        </div>
+
+        <!-- Barra de progreso de tiempos -->
+        <div class="beats-bar-wrapper">
+          <div class="beats-bar" id="beats-bar">
+            <div class="beats-fill" id="beats-fill"></div>
+            <div class="beats-overflow" id="beats-overflow"></div>
+          </div>
+          <span class="beats-label" id="beats-label">0 / 4 tiempos</span>
+        </div>
+
+      </div>
+
+      <!-- Paleta de figuras -->
+      <section class="palette-section">
+        <p class="palette-label">Figuras disponibles</p>
+        <div class="palette" id="palette">
+          <!-- Generado por JS: una carta por figura musical -->
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Controles -->
+    <div class="controls">
+      <button id="btn-undo" class="btn-secondary" title="Deshacer última nota">
+        ↩ Deshacer
+      </button>
+      <button id="btn-clear" class="btn-secondary" title="Limpiar compás">
+        ✕ Limpiar
+      </button>
+      <button id="btn-check" class="btn-primary" disabled>
+        Verificar ✓
+      </button>
+    </div>
+
+    <!-- Feedback overlay -->
+    <div id="feedback" class="feedback hidden">
+      <div class="feedback-card">
+        <div class="feedback-icon" id="feedback-icon"></div>
+        <p class="feedback-msg" id="feedback-msg"></p>
+        <button id="btn-next" class="btn-primary">Siguiente nivel →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ░░ PANTALLA FINAL ░░ -->
+  <div id="screen-end" class="screen">
+    <div class="end-content">
+      <p class="label-small">¡Lo lograste!</p>
+      <h2 class="title-main">Compás<br>Completo</h2>
+      <p id="end-score-text" class="subtitle">Puntuación final: 0</p>
+      <button id="btn-restart" class="btn-primary">Jugar de nuevo</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
