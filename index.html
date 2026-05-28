@@ -3,125 +3,247 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Construye el Compás</title>
+
+  <title>Construye el Compás | Musicala</title>
+  <meta
+    name="description"
+    content="Minijuego musical de Musicala para practicar figuras rítmicas y construcción de compases."
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+
+<body class="musicala-game">
+
+  <!-- Canvas global para confetti -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
   <!-- ░░ PANTALLA DE INICIO ░░ -->
-  <div id="screen-intro" class="screen active">
+  <section id="screen-intro" class="screen screen-intro active" aria-label="Pantalla de inicio">
+    <div class="intro-bg-shape intro-bg-shape-1" aria-hidden="true"></div>
+    <div class="intro-bg-shape intro-bg-shape-2" aria-hidden="true"></div>
+
     <div class="intro-content">
-      <p class="label-small">minijuego de música</p>
-      <h1 class="title-main">Construye<br>el Compás</h1>
-      <p class="subtitle">Llena cada compás con las figuras correctas<br>sin pasarte ni quedarte corto.</p>
-      <button id="btn-start" class="btn-primary">Comenzar</button>
+      <div class="brand-mark">
+        <img
+          src="./logo.png"
+          alt="Logo Musicala"
+          class="brand-logo"
+        />
+      </div>
+
+      <p class="label-small">Minijuego musical</p>
+
+      <h1 class="title-main">
+        Construye<br>
+        el Compás
+      </h1>
+
+      <p class="subtitle">
+        Llena cada compás con las figuras correctas sin pasarte ni quedarte corto.
+      </p>
+
+      <div class="intro-actions">
+        <button id="btn-start" class="btn-primary" type="button">
+          Comenzar
+        </button>
+
+        <p class="helper-text">
+          Tip rápido: selecciona una figura, toca el pentagrama y usa
+          <strong>P</strong> para escuchar tu compás.
+        </p>
+      </div>
     </div>
-    <div class="staff-deco" aria-hidden="true">
-      <div class="line"></div><div class="line"></div>
-      <div class="line"></div><div class="line"></div>
-      <div class="line"></div>
+
+    <div class="floating-notes" aria-hidden="true">
+      <span class="fn fn-1">♩</span>
+      <span class="fn fn-2">♪</span>
+      <span class="fn fn-3">𝅗𝅥</span>
+      <span class="fn fn-4">♬</span>
+      <span class="fn fn-5">𝅝</span>
+      <span class="fn fn-6">𝅘𝅥𝅯</span>
+      <span class="fn fn-7">♩</span>
+      <span class="fn fn-8">♫</span>
     </div>
-  </div>
+  </section>
 
   <!-- ░░ PANTALLA DE JUEGO ░░ -->
-  <div id="screen-game" class="screen">
+  <section id="screen-game" class="screen screen-game" aria-label="Minijuego Construye el Compás">
 
     <header class="game-header">
-      <div class="hud-item">
-        <span class="hud-label">Nivel</span>
-        <span id="hud-level" class="hud-value">1</span>
+      <div class="header-brand">
+        <img
+          src="./logo.png"
+          alt="Logo Musicala"
+          class="header-logo"
+        />
       </div>
-      <h2 class="game-title">Construye el Compás</h2>
-      <div class="hud-item">
-        <span class="hud-label">Puntos</span>
-        <span id="hud-score" class="hud-value">0</span>
+
+      <div class="hud hud-left" aria-label="Puntaje y nivel">
+        <div class="hud-item">
+          <span class="hud-label">Puntos</span>
+          <span id="hud-score" class="hud-value">0</span>
+        </div>
+
+        <div class="hud-item">
+          <span class="hud-label">Nivel</span>
+          <span id="hud-level" class="hud-value">1/7</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <h2 class="game-title">Construye el Compás</h2>
+        <div id="level-dots" class="level-dots" aria-label="Progreso de niveles"></div>
+      </div>
+
+      <div class="hud hud-right" aria-label="Racha">
+        <div class="hud-item">
+          <span class="hud-label">Racha</span>
+          <span id="hud-streak" class="hud-value streak-value">0</span>
+        </div>
       </div>
     </header>
 
     <main class="game-main">
 
-      <!-- Instrucción del nivel -->
       <div id="level-instruction" class="level-instruction">
         <span id="instruction-text">Llena un compás de 4/4</span>
       </div>
 
-      <!-- Área del pentagrama -->
-      <div class="staff-wrapper">
+      <section class="staff-card" aria-label="Área para construir el compás">
 
-        <!-- Indicador de compás (tiempo) -->
-        <div class="time-signature" id="time-signature">
-          <span id="ts-top">4</span>
-          <span id="ts-bottom">4</span>
-        </div>
+        <div class="staff-wrapper">
 
-        <!-- Pentagrama con notas colocadas -->
-        <div class="staff" id="staff">
-          <div class="staff-lines" aria-hidden="true">
-            <div class="s-line"></div><div class="s-line"></div>
-            <div class="s-line"></div><div class="s-line"></div>
-            <div class="s-line"></div>
+          <div id="time-signature" class="time-signature" aria-label="Indicador de compás">
+            <span id="ts-top">4</span>
+            <span id="ts-bottom">4</span>
           </div>
-          <!-- Las notas colocadas se insertan aquí -->
-          <div class="placed-notes" id="placed-notes"></div>
-          <!-- Cursor fantasma para preview -->
-          <div class="ghost-note" id="ghost-note" aria-hidden="true"></div>
-        </div>
 
-        <!-- Barra de progreso de tiempos -->
-        <div class="beats-bar-wrapper">
-          <div class="beats-bar" id="beats-bar">
-            <div class="beats-fill" id="beats-fill"></div>
-            <div class="beats-overflow" id="beats-overflow"></div>
+          <div id="staff" class="staff" role="button" tabindex="0" aria-label="Pentagrama. Haz clic para agregar una figura musical.">
+            <div class="staff-lines" aria-hidden="true">
+              <div class="s-line"></div>
+              <div class="s-line"></div>
+              <div class="s-line"></div>
+              <div class="s-line"></div>
+              <div class="s-line"></div>
+            </div>
+
+            <div id="placed-notes" class="placed-notes"></div>
+            <div id="ghost-note" class="ghost-note" aria-hidden="true"></div>
           </div>
-          <span class="beats-label" id="beats-label">0 / 4 tiempos</span>
+
+          <div class="beats-bar-wrapper" aria-label="Progreso de tiempos del compás">
+            <div id="beats-bar" class="beats-bar">
+              <div id="beats-fill" class="beats-fill"></div>
+              <div id="beats-overflow" class="beats-overflow"></div>
+              <div id="beat-ticks" class="beat-ticks"></div>
+              <div id="playback-cursor" class="playback-cursor" aria-hidden="true"></div>
+            </div>
+
+            <span id="beats-label" class="beats-label">0 / 4 tiempos</span>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="palette-section" aria-label="Figuras musicales disponibles">
+        <div class="section-heading">
+          <p class="palette-label">Figuras disponibles</p>
+          <p class="section-help">Elige una figura y agrégala al pentagrama.</p>
         </div>
 
-      </div>
-
-      <!-- Paleta de figuras -->
-      <section class="palette-section">
-        <p class="palette-label">Figuras disponibles</p>
-        <div class="palette" id="palette">
-          <!-- Generado por JS: una carta por figura musical -->
-        </div>
+        <div id="palette" class="palette"></div>
       </section>
 
     </main>
 
-    <!-- Controles -->
-    <div class="controls">
-      <button id="btn-undo" class="btn-secondary" title="Deshacer última nota">
+    <footer class="controls" aria-label="Controles del juego">
+      <button id="btn-undo" class="btn-secondary" type="button" title="Deshacer última nota">
         ↩ Deshacer
       </button>
-      <button id="btn-clear" class="btn-secondary" title="Limpiar compás">
+
+      <button id="btn-clear" class="btn-secondary" type="button" title="Limpiar compás">
         ✕ Limpiar
       </button>
-      <button id="btn-check" class="btn-primary" disabled>
+
+      <button id="btn-play" class="btn-play" type="button" title="Reproducir compás" disabled>
+        <span class="play-icon">▶</span>
+        <span class="play-text">Play</span>
+      </button>
+
+      <button id="btn-check" class="btn-primary" type="button" disabled>
         Verificar ✓
       </button>
-    </div>
+    </footer>
 
     <!-- Feedback overlay -->
-    <div id="feedback" class="feedback hidden">
+    <div id="feedback" class="feedback hidden" role="dialog" aria-live="polite" aria-label="Resultado del nivel">
       <div class="feedback-card">
-        <div class="feedback-icon" id="feedback-icon"></div>
-        <p class="feedback-msg" id="feedback-msg"></p>
-        <button id="btn-next" class="btn-primary">Siguiente nivel →</button>
+        <div id="feedback-icon" class="feedback-icon" aria-hidden="true"></div>
+
+        <div class="feedback-copy">
+          <p id="feedback-title" class="feedback-title"></p>
+          <p id="feedback-msg" class="feedback-msg"></p>
+        </div>
+
+        <button id="btn-next" class="btn-primary" type="button">
+          Siguiente nivel →
+        </button>
       </div>
     </div>
 
-  </div>
+  </section>
 
   <!-- ░░ PANTALLA FINAL ░░ -->
-  <div id="screen-end" class="screen">
-    <div class="end-content">
-      <p class="label-small">¡Lo lograste!</p>
-      <h2 class="title-main">Compás<br>Completo</h2>
-      <p id="end-score-text" class="subtitle">Puntuación final: 0</p>
-      <button id="btn-restart" class="btn-primary">Jugar de nuevo</button>
-    </div>
-  </div>
+  <section id="screen-end" class="screen screen-end" aria-label="Pantalla final">
+    <div class="end-bg-shape end-bg-shape-1" aria-hidden="true"></div>
+    <div class="end-bg-shape end-bg-shape-2" aria-hidden="true"></div>
 
-  <script src="app.js"></script>
+    <div class="end-content">
+      <div class="brand-mark">
+        <img
+          src="./logo.png"
+          alt="Logo Musicala"
+          class="brand-logo"
+        />
+      </div>
+
+      <div class="end-trophy" aria-hidden="true">🏆</div>
+
+      <p class="label-small">¡Lo lograste!</p>
+
+      <h2 class="title-main">
+        Compás<br>
+        Completo
+      </h2>
+
+      <p class="subtitle">
+        Terminaste todos los niveles. El ritmo sobrevivió. Milagro pedagógico desbloqueado.
+      </p>
+
+      <div class="end-stats">
+        <div class="stat-item">
+          <span id="end-score" class="stat-value">0</span>
+          <span class="stat-label">puntos</span>
+        </div>
+
+        <div class="stat-divider"></div>
+
+        <div class="stat-item">
+          <span id="end-streak" class="stat-value">0</span>
+          <span class="stat-label">racha máx.</span>
+        </div>
+      </div>
+
+      <button id="btn-restart" class="btn-primary" type="button">
+        Jugar de nuevo
+      </button>
+    </div>
+  </section>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
